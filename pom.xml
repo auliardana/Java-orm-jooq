@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>java</groupId>
+    <artifactId>coba-jooq</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq</artifactId>
+            <version>3.18.7</version>
+        </dependency>
+
+        <!-- These may not be required, unless you use the GenerationTool manually for code generation -->
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq-meta</artifactId>
+            <version>3.18.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq-codegen</artifactId>
+            <version>3.18.7</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.6.0</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-codegen-maven</artifactId>
+                <version>3.18.7</version>
+                <executions>
+                    <execution>
+                        <id>generate-jooq</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.postgresql</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>42.6.0</version>
+                    </dependency>
+
+                    <!-- https://mvnrepository.com/artifact/org.jooq/jooq-codegen -->
+<!--                    <dependency>-->
+<!--                        <groupId>org.jooq</groupId>-->
+<!--                        <artifactId>jooq-codegen</artifactId>-->
+<!--                        <version>3.18.7</version>-->
+<!--                    </dependency>-->
+
+<!--                    <dependency>-->
+<!--                        <groupId>org.jooq</groupId>-->
+<!--                        <artifactId>jooq-meta</artifactId>-->
+<!--                        <version>3.18.7</version>-->
+<!--                    </dependency>-->
+                </dependencies>
+<!--                <configuration>-->
+<!--                    -->
+<!--                </configuration>-->
+                <configuration>
+                    <!-- Configure the database connection here -->
+                    <jdbc>
+<!--                    <driver>oracle.jdbc.OracleDriver</driver>-->
+                        <driver>org.postgresql.Driver</driver>
+<!--                    <url>jdbc:oracle:thin:@[your jdbc connection parameters]</url>-->
+                        <url>jdbc:postgresql://localhost:5432/jooq</url>
+                        <user>postgres</user>
+                        <password>postgres</password>
+
+                        <!-- You can also pass user/password and other JDBC properties in the optional properties tag: -->
+<!--                        <properties>-->
+<!--                            <property><key>user</key><value>[db-user]</value></property>-->
+<!--                            <property><key>password</key><value>[db-password]</value></property>-->
+<!--                        </properties>-->
+                    </jdbc>
+
+                    <generator>
+                        <database>
+<!--                        <name>org.jooq.util.postgres.PostgresDatabase</name>-->
+                            <name>org.jooq.meta.postgres.PostgresDatabase</name>
+                            <includes>.*</includes>
+
+                            <excludes></excludes>
+
+                            <inputSchema>public</inputSchema>
+                        </database>
+
+<!--                        &lt;!&ndash; Generation flags: See advanced configuration properties &ndash;&gt;-->
+<!--                        <generate/>-->
+
+                        <target>
+                            <!-- The destination package of your generated classes (within the
+                                 destination directory)
+
+                                 jOOQ may append the schema name to this package if generating multiple schemas,
+                                 e.g. org.jooq.your.packagename.schema1
+                                      org.jooq.your.packagename.schema2 -->
+<!--                        <packageName>org.jooq.your.packagename</packageName>-->
+<!--                        <packageName>org.thoughts.on.java.db</packageName>-->
+                            <packageName>generated-sources</packageName>
+
+                            <!-- The destination directory of your generated classes -->
+                            <directory>src/main/java/org/example</directory>
+                        </target>
+                    </generator>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+
